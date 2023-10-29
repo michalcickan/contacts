@@ -23,7 +23,8 @@ struct ContactsView<VM: ContactsViewModelType>: View {
 struct ContactsView_Previews: PreviewProvider {
     static var previews: some View {
         ContactsView(
-            viewModel: ContactsViewModel()
+            viewModel: ContactsViewModel(service: ContactsService(storage: PreviewStorage()))
         )
+        .environmentObject(Router(isPresented: .constant(.contacts)))
     }
 }

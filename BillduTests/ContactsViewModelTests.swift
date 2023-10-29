@@ -33,7 +33,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedContact], value)
+                XCTAssertEqual([expectedContact].comparableArray, value.comparableArray)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -51,7 +51,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedContact], value)
+                XCTAssertEqual([expectedContact].comparableArray, value.comparableArray)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -69,7 +69,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedContact], value)
+                XCTAssertEqual([expectedContact].comparableArray, value.comparableArray)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -87,7 +87,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedContact], value)
+                XCTAssertEqual([expectedContact].comparableArray, value.comparableArray)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -105,11 +105,41 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedContact], value)
+                XCTAssertEqual([expectedContact].comparableArray, value.comparableArray)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
         viewModel.input.searchText = "Noone"
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testShouldGiveAllContactsAfterAppear() throws {
+        let contacts = [
+            Contact(name: "Michal", surname: "Cickan", phoneNumber: "0949200629"),
+            Contact(name: "Peter", surname: "Test", phoneNumber: "0905252111"),
+        ]
+        service.contacts = contacts
+        let expectation = XCTestExpectation(description: "State is set to populated")
+        self.viewModel.$contacts
+            .dropFirst()
+            .sink(receiveValue: { value in
+                XCTAssertEqual(contacts.comparableArray, value.comparableArray)
+                expectation.fulfill()
+            })
+            .store(in: &cancellables)
+        viewModel.input.didAppear.send(())
+        wait(for: [expectation], timeout: 10)
+    }
+    
+    func testShouldCallShowRouteWhenDidTapContact() throws {
+        let expectation = XCTestExpectation(description: "State is set to populated")
+        self.viewModel.showRoute
+            .sink(receiveValue: { value in
+                XCTAssertEqual(.addContact, value)
+                expectation.fulfill()
+            })
+            .store(in: &cancellables)
+        viewModel.input.didTapAddContact.send(())
         wait(for: [expectation], timeout: 10)
     }
 }
@@ -119,5 +149,18 @@ final class MockContactsService: ContactsServiceType {
     
     func getAllContacts() throws -> [Contact] {
         contacts
+    }
+}
+
+fileprivate extension Array where Element == ContactCellViewModel {
+    var comparableArray: [String] {
+        map { $0.title + $0.description }
+    }
+}
+
+fileprivate extension Array where Element == Contact {
+    var comparableArray: [String] {
+        map { ContactCellViewModel(id: "2", model: $0, swipeActions: [], onTap: { }) }
+            .map { $0.title + $0.description }
     }
 }

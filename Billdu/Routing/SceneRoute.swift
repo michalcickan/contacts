@@ -7,12 +7,15 @@ enum SceneRoute {
     case contacts
     case favouriteContacts
     case addContact
+    case contactDetail(_ model: Contact)
 }
 
 extension SceneRoute {
     @ViewBuilder
     func view(_ persistentStore: PersistentStorage) -> some View {
         switch self {
+        case let .contactDetail(model):
+            EmptyView()
         case .main:
             EmptyView()
         case .contacts:
@@ -28,6 +31,8 @@ extension SceneRoute {
 extension SceneRoute: Identifiable {
     var id: String {
         switch self {
+        case let .contactDetail(model):
+            return model.id.storeIdentifier ?? String(describing: model)
         case .main:
             return "main"
         case .contacts:

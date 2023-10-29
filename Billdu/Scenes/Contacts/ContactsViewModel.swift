@@ -3,41 +3,72 @@ import Combine
 
 class ContactsViewModel: ContactsOutput, ContactsInput {
     // MARK: - Output
-    @Published private(set) var contacts: [Contact] = []
+    @Published private(set) var contacts: [ContactCellViewModel] = []
     
     // MARK: - Input
     @Published var searchText: String = ""
-    let addContact = PassthroughSubject<Void, Never>()
+    let didTapAddContact = PassthroughSubject<Void, Never>()
+    let didAppear = PassthroughSubject<Void, Never>()
     
     private var cancellables: Set<AnyCancellable> = []
     private let service: ContactsServiceType
     
+    let _showRoute = PassthroughSubject<SceneRoute, Never>()
+    var showRoute: AnyPublisher<SceneRoute, Never> {
+        _showRoute.eraseToAnyPublisher()
+    }
+    
+    var _showError = PassthroughSubject<String, Never>()
+    var showError: AnyPublisher<String, Never> {
+        _showError.eraseToAnyPublisher()
+    }
+    
     init(service: ContactsServiceType) {
         self.service = service
         
-        $searchText
-            .dropFirst()
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
-            .flatMap { query in
-                Future { promise in
-                    Task {
-                        do {
-                            let contacts = try await service.getAllContacts()
-                            promise(.success(contacts.searchFulltext(with: query)))
-                        } catch {
-                            promise(.success([]))
-                        }
+        Publishers.Merge(
+            $searchText
+                .dropFirst()
+                .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
+                .asyncMap { [weak _showError] query in
+                    do {
+                        let contacts = try await service.getAllContacts()
+                        return contacts.searchFulltext(with: query)
+                    } catch {
+                        _showError?.send(error.localizedDescription)
+                        return []
+                    }
+                },
+            didAppear
+                .asyncMap { [weak _showError] in
+                    do {
+                        return try await service.getAllContacts()
+                    } catch {
+                        _showError?.send(error.localizedDescription)
+                        return []
                     }
                 }
-            }
-            .receive(on: RunLoop.main)
-            .assign(to: \.contacts, on: self)
+        )
+        .map { [unowned _showRoute] contacts in
+            contacts.enumerated()
+                .map { offset, model in
+                    ContactCellViewModel(
+                        id: "\(offset)",
+                        model: model,
+                        swipeActions: []
+                    ) {
+                        _showRoute.send(.contactDetail(model))
+                    }
+                }
+        }
+        .receive(on: RunLoop.main)
+        .assign(to: \.contacts, on: self)
+        .store(in: &cancellables)
+        didTapAddContact
+            .map { SceneRoute.addContact }
+            .sink { [unowned _showRoute] route in _showRoute.send(route) }
             .store(in: &cancellables)
     }
-}
-
-extension ContactsViewModel {
-    
 }
 
 extension ContactsViewModel: ContactsViewModelType {

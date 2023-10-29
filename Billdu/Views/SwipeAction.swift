@@ -15,10 +15,9 @@ struct SwipeActionViewModel: Equatable, Hashable, Identifiable {
     }
     
     enum Style {
-        case delete, addFavourite
+        case delete, addFavourite, unfavourite
     }
     
-    let title: String
     let style: Style
     let action: () -> Void
 }
@@ -32,10 +31,11 @@ struct SwipeAction: View {
     
     var body: some View {
         Button(
-            viewModel.title,
             action: viewModel.action
-        )
-        .background(viewModel.style.tintColor)
+        ) {
+            Image(systemName: viewModel.style.systemImageName)
+        }
+        .tint(viewModel.style.tintColor)
     }
 }
 
@@ -46,10 +46,23 @@ fileprivate extension SwipeActionViewModel.Style {
             return .yellow
         case .delete:
             return .red
+        case .unfavourite:
+            return .red
+        }
+    }
+    
+    var systemImageName: String {
+        switch self {
+        case .addFavourite:
+            return "star"
+        case .delete:
+            return "trash"
+        case .unfavourite:
+            return "star.slash"
         }
     }
 }
 
 #Preview {
-    SwipeAction(viewModel: SwipeActionViewModel(title: "test", style: .addFavourite) { })
+    SwipeAction(viewModel: SwipeActionViewModel(style: .addFavourite) { })
 }

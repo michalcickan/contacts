@@ -5,11 +5,9 @@ protocol ContactsServiceType {
     func getAllContacts() async throws -> [Contact]
 }
 
-struct ContactsService: ContactsServiceType {
-    let storage: PersistentStorage
-    
+extension ContactsManager: ContactsServiceType {
     func getAllContacts() async throws -> [Contact] {
-        try storage.fetch(
+        try persistentStorage.fetch(
             FetchDescriptor<Contact>()
         )
     }

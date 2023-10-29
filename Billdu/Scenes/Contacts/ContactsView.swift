@@ -14,18 +14,17 @@ struct ContactsView<VM: ContactsViewModelType>: View {
             List(viewModel.output.contacts) { item in
                 ContactCellView(viewModel: item)
             }
-            .padding()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(LocalizedStringKey(viewModel.output.sceneTitle))
             .toolbar {
                 Button {
-                    print("Edit button was tapped")
+                    viewModel.input.didTapAddContact.send(())
                 } label: {
                     Image(systemName: "plus")
                 }
             }
-            .onAppear {
-                viewModel.input.didAppear.send(())
+            .onReceive(viewModel.output.showRoute) {
+                router.show($0, as: .sheet)
             }
         }
     }
@@ -34,8 +33,8 @@ struct ContactsView<VM: ContactsViewModelType>: View {
 struct ContactsView_Previews: PreviewProvider {
     static var previews: some View {
         ContactsView(
-            viewModel: ContactsViewModel(isFavouriteMode: false, service: ContactsService(storage: PreviewStorage()))
-        )
+            viewModel: ContactsViewModel(isFavouriteMode: false, service: ContactsManager(persistentStorage: PreviewStorage()), contactsObservable: ContactsManager(persistentStorage: PreviewStorage())
+        ))
         .environmentObject(Router(isPresented: .constant(.contacts)))
     }
 }

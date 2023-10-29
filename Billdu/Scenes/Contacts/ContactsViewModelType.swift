@@ -3,7 +3,6 @@ import Combine
 
 protocol ContactsInput: AnyObject {
     var searchText: String { get set }
-    var didAppear: PassthroughSubject<Void, Never> { get }
     var didTapAddContact: PassthroughSubject<Void, Never> { get }
 }
 

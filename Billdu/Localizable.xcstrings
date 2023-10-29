@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "add_contact_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Contact"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať Kontakt"
+          }
+        }
+      }
+    },
+    "Confirm" : {
+
+    },
     "contacts_title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31,6 +51,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obľúbené Kontakty"
+          }
+        }
+      }
+    },
+    "name_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Meno"
+          }
+        }
+      }
+    },
+    "phone_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Telefónne číslo"
+          }
+        }
+      }
+    },
+    "surname_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Surname"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Priezvisko"
           }
         }
       }

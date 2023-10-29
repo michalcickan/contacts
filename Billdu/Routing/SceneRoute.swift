@@ -12,7 +12,7 @@ enum SceneRoute {
 
 extension SceneRoute {
     @ViewBuilder
-    func view(_ persistentStore: PersistentStorage) -> some View {
+    func view(_ contactsManager: ContactsManager) -> some View {
         switch self {
         case let .contactDetail(model):
             EmptyView()
@@ -23,7 +23,9 @@ extension SceneRoute {
         case .favouriteContacts:
             EmptyView()
         case .addContact:
-            EmptyView()
+            AddContactView(
+                viewModel: AddContactViewModel(service: contactsManager)
+            )
         }
     }
 }

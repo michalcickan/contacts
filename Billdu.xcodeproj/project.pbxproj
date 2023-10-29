@@ -22,6 +22,11 @@
 		95F6B7DF2AEEB59F0039E31A /* Published+Mappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7DE2AEEB59F0039E31A /* Published+Mappers.swift */; };
 		95F6B7E22AEEB9750039E31A /* ContactCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7E12AEEB9750039E31A /* ContactCellView.swift */; };
 		95F6B7E62AEEBBAE0039E31A /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7E52AEEBBAE0039E31A /* SwipeAction.swift */; };
+		95F6B7EE2AEED32D0039E31A /* AddContactViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7E92AEED32D0039E31A /* AddContactViewModelType.swift */; };
+		95F6B7EF2AEED32D0039E31A /* AddContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7EA2AEED32D0039E31A /* AddContactView.swift */; };
+		95F6B7F02AEED32D0039E31A /* AddContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7EB2AEED32D0039E31A /* AddContactViewModel.swift */; };
+		95F6B7F12AEED32D0039E31A /* AddContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7EC2AEED32D0039E31A /* AddContactService.swift */; };
+		95F6B7F42AEEE1DC0039E31A /* ContactsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6B7F32AEEE1DC0039E31A /* ContactsManager.swift */; };
 		95FE6CBD2AEE7E63004A5B7E /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE6CBC2AEE7E63004A5B7E /* MainScene.swift */; };
 		95FE6CBF2AEE8F65004A5B7E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 95FE6CBE2AEE8F65004A5B7E /* Localizable.xcstrings */; };
 		95FE6CC72AEE9033004A5B7E /* ContactsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE6CC22AEE9033004A5B7E /* ContactsViewModelType.swift */; };
@@ -66,6 +71,11 @@
 		95F6B7DE2AEEB59F0039E31A /* Published+Mappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Published+Mappers.swift"; sourceTree = "<group>"; };
 		95F6B7E12AEEB9750039E31A /* ContactCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCellView.swift; sourceTree = "<group>"; };
 		95F6B7E52AEEBBAE0039E31A /* SwipeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeAction.swift; sourceTree = "<group>"; };
+		95F6B7E92AEED32D0039E31A /* AddContactViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewModelType.swift; sourceTree = "<group>"; };
+		95F6B7EA2AEED32D0039E31A /* AddContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactView.swift; sourceTree = "<group>"; };
+		95F6B7EB2AEED32D0039E31A /* AddContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewModel.swift; sourceTree = "<group>"; };
+		95F6B7EC2AEED32D0039E31A /* AddContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactService.swift; sourceTree = "<group>"; };
+		95F6B7F32AEEE1DC0039E31A /* ContactsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManager.swift; sourceTree = "<group>"; };
 		95FE6CBC2AEE7E63004A5B7E /* MainScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 		95FE6CBE2AEE8F65004A5B7E /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		95FE6CC22AEE9033004A5B7E /* ContactsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewModelType.swift; sourceTree = "<group>"; };
@@ -122,6 +132,7 @@
 		95C49A762AEBF908003DB342 /* Billdu */ = {
 			isa = PBXGroup;
 			children = (
+				95F6B7F22AEEE1CE0039E31A /* Managers */,
 				95F6B7DD2AEEB58A0039E31A /* Extensions */,
 				95F6B7E02AEEB9640039E31A /* Views */,
 				95FE6CBB2AEE7E4E004A5B7E /* Scenes */,
@@ -205,9 +216,29 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		95F6B7E72AEED3090039E31A /* AddContact */ = {
+			isa = PBXGroup;
+			children = (
+				95F6B7E92AEED32D0039E31A /* AddContactViewModelType.swift */,
+				95F6B7EA2AEED32D0039E31A /* AddContactView.swift */,
+				95F6B7EB2AEED32D0039E31A /* AddContactViewModel.swift */,
+				95F6B7EC2AEED32D0039E31A /* AddContactService.swift */,
+			);
+			path = AddContact;
+			sourceTree = "<group>";
+		};
+		95F6B7F22AEEE1CE0039E31A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				95F6B7F32AEEE1DC0039E31A /* ContactsManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		95FE6CBB2AEE7E4E004A5B7E /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				95F6B7E72AEED3090039E31A /* AddContact */,
 				95FE6CC02AEE900F004A5B7E /* Contacts */,
 				95FE6CBC2AEE7E63004A5B7E /* MainScene.swift */,
 			);
@@ -365,15 +396,20 @@
 				95FE6CBD2AEE7E63004A5B7E /* MainScene.swift in Sources */,
 				95F6B7E22AEEB9750039E31A /* ContactCellView.swift in Sources */,
 				95C49AA72AEBFDDF003DB342 /* Router.swift in Sources */,
+				95F6B7EF2AEED32D0039E31A /* AddContactView.swift in Sources */,
 				95FE6CC82AEE9033004A5B7E /* ContactsView.swift in Sources */,
 				95C49AAF2AEC0008003DB342 /* Contact.swift in Sources */,
 				95F6B7E62AEEBBAE0039E31A /* SwipeAction.swift in Sources */,
 				95FE6CC72AEE9033004A5B7E /* ContactsViewModelType.swift in Sources */,
 				95C49A782AEBF908003DB342 /* BillduApp.swift in Sources */,
+				95F6B7F02AEED32D0039E31A /* AddContactViewModel.swift in Sources */,
 				95C49AAC2AEBFF8A003DB342 /* PersistentStorage.swift in Sources */,
+				95F6B7F42AEEE1DC0039E31A /* ContactsManager.swift in Sources */,
+				95F6B7EE2AEED32D0039E31A /* AddContactViewModelType.swift in Sources */,
 				95FE6CCA2AEE9033004A5B7E /* ContactsService.swift in Sources */,
 				95F6B7DF2AEEB59F0039E31A /* Published+Mappers.swift in Sources */,
 				95FE6CC92AEE9033004A5B7E /* ContactsViewModel.swift in Sources */,
+				95F6B7F12AEED32D0039E31A /* AddContactService.swift in Sources */,
 				95C49AA52AEBFDA8003DB342 /* RoutingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

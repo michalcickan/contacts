@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct BillduApp: App {
-    var sharedModelContainer: ModelContainer = {
+    var modelContainer: ModelContainer = {
         let schema = Schema([
             Contact.self,
         ])
@@ -27,7 +27,7 @@ struct BillduApp: App {
         WindowGroup {
             MainScene()
                 .environmentObject(Router(isPresented: .constant(.main)))
+                .environmentObject(ContactsManager(persistentStorage: modelContainer.mainContext))
         }
-        .modelContainer(sharedModelContainer)
     }
 }

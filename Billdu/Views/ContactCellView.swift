@@ -54,6 +54,13 @@ fileprivate extension Array where Element == SwipeActionViewModel {
     }
     
     var trailingActions: [SwipeActionViewModel] {
-        filter { $0.style == .delete }
+        filter {
+            switch $0.style {
+            case .delete, .unfavourite:
+                return true
+            default:
+                return false
+            }
+        }
     }
 }

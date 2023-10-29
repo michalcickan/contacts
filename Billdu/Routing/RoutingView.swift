@@ -4,7 +4,7 @@ import SwiftData
 struct RoutingView<Content: View>: View {
     @StateObject var router: Router
     private let content: Content
-    @Environment(\.modelContext) private var context
+    @EnvironmentObject private var contactsManager: ContactsManager
     
     init(router: Router, @ViewBuilder content: @escaping () -> Content) {
         _router = StateObject(wrappedValue: router)
@@ -15,11 +15,11 @@ struct RoutingView<Content: View>: View {
         NavigationStack(path: router.navigationPath) {
             content
                 .navigationDestination(for: SceneRoute.self) { sceneRoute in
-                    router.configure(view: sceneRoute.view(context), route: .navigation)
+                    router.configure(view: sceneRoute.view(contactsManager), route: .navigation)
                 }
         }.sheet(item: router.presentingSheet) { sceneRoute in
             router.configure(
-                view: sceneRoute.view(context),
+                view: sceneRoute.view(contactsManager),
                 route: .sheet
             )
         }

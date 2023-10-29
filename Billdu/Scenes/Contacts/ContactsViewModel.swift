@@ -4,15 +4,7 @@ import Combine
 class ContactsViewModel: ContactsOutput, ContactsInput {
     // MARK: - Output
     @Published private(set) var contacts: [ContactCellViewModel] = []
-    
-    // MARK: - Input
-    @Published var searchText: String = ""
-    let didTapAddContact = PassthroughSubject<Void, Never>()
-    let didAppear = PassthroughSubject<Void, Never>()
-    
-    private var cancellables: Set<AnyCancellable> = []
-    private let service: ContactsServiceType
-    
+    let sceneTitle: String
     let _showRoute = PassthroughSubject<SceneRoute, Never>()
     var showRoute: AnyPublisher<SceneRoute, Never> {
         _showRoute.eraseToAnyPublisher()
@@ -23,22 +15,23 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
         _showError.eraseToAnyPublisher()
     }
     
-    init(service: ContactsServiceType) {
-        self.service = service
+    // MARK: - Input
+    @Published var searchText: String = ""
+    let didTapAddContact = PassthroughSubject<Void, Never>()
+    let didAppear = PassthroughSubject<Void, Never>()
+    
+    private var cancellables: Set<AnyCancellable> = []
+    private let isFavouriteMode: Bool
+    
+    init(isFavouriteMode: Bool, service: ContactsServiceType) {
+        self.isFavouriteMode = isFavouriteMode
+        self.sceneTitle = isFavouriteMode ? "favourite_contacts_title" : "contacts_title"
         
         Publishers.Merge(
             $searchText
                 .dropFirst()
                 .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
-                .asyncMap { [weak _showError] query in
-                    do {
-                        let contacts = try await service.getAllContacts()
-                        return contacts.searchFulltext(with: query)
-                    } catch {
-                        _showError?.send(error.localizedDescription)
-                        return []
-                    }
-                },
+                .asyncMap(searchContacts(service)),
             didAppear
                 .asyncMap { [weak _showError] in
                     do {
@@ -49,7 +42,33 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
                     }
                 }
         )
-        .map { [unowned _showRoute] contacts in
+        .map(mapContacts)
+        .receive(on: RunLoop.main)
+        .assign(to: \.contacts, on: self)
+        .store(in: &cancellables)
+        
+        didTapAddContact
+            .map { SceneRoute.addContact }
+            .sink { [unowned _showRoute] route in _showRoute.send(route) }
+            .store(in: &cancellables)
+    }
+}
+
+private extension ContactsViewModel {
+    func searchContacts(_ service: ContactsServiceType) -> (String) async -> [Contact] {
+        { [weak _showError] query in
+            do {
+                let contacts = try await service.getAllContacts()
+                return contacts.searchFulltext(with: query)
+            } catch {
+                _showError?.send(error.localizedDescription)
+                return []
+            }
+        }
+    }
+    
+    var mapContacts: ([Contact]) -> [ContactCellViewModel] {
+        { [unowned _showRoute] contacts in
             contacts.enumerated()
                 .map { offset, model in
                     ContactCellViewModel(
@@ -61,13 +80,17 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
                     }
                 }
         }
-        .receive(on: RunLoop.main)
-        .assign(to: \.contacts, on: self)
-        .store(in: &cancellables)
-        didTapAddContact
-            .map { SceneRoute.addContact }
-            .sink { [unowned _showRoute] route in _showRoute.send(route) }
-            .store(in: &cancellables)
+    }
+    
+    var favouriteSwipeActions: [SwipeActionViewModel] {
+        [
+            SwipeActionViewModel(title: "Favourite", style: .addFavourite) {
+                
+            },
+            SwipeActionViewModel(title: "Delete", style: .addFavourite) {
+                
+            }
+        ]
     }
 }
 

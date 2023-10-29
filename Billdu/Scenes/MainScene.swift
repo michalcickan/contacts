@@ -7,8 +7,17 @@ struct MainScene: View {
     var body: some View {
         TabView {
             ContactsView(
-                viewModel: ContactsViewModel(service: ContactsService(storage: context))
+                viewModel: ContactsViewModel(isFavouriteMode: false, service: ContactsService(storage: context))
             )
+            .tabItem {
+                Image(systemName: "person.circle.fill")
+            }
+            ContactsView(
+                viewModel: ContactsViewModel(isFavouriteMode: true, service: ContactsService(storage: context))
+            )
+            .tabItem {
+                Image(systemName: "star")
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ final class ContactsViewModelTests: XCTestCase {
     private var cancellables: Set<AnyCancellable> = []
     
     override func setUpWithError() throws {
-        viewModel = ContactsViewModel(service: service)
+        viewModel = ContactsViewModel(isFavouriteMode: false, service: service)
     }
     
     override func tearDownWithError() throws {

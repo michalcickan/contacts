@@ -11,11 +11,22 @@ struct ContactsView<VM: ContactsViewModelType>: View {
     
     var body: some View {
         RoutingView(router: router) {
-            VStack(spacing: 10) {
-                
+            List(viewModel.output.contacts) { item in
+                ContactCellView(viewModel: item)
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(LocalizedStringKey(viewModel.output.sceneTitle))
+            .toolbar {
+                Button {
+                    print("Edit button was tapped")
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            .onAppear {
+                viewModel.input.didAppear.send(())
+            }
         }
     }
 }
@@ -23,7 +34,7 @@ struct ContactsView<VM: ContactsViewModelType>: View {
 struct ContactsView_Previews: PreviewProvider {
     static var previews: some View {
         ContactsView(
-            viewModel: ContactsViewModel(service: ContactsService(storage: PreviewStorage()))
+            viewModel: ContactsViewModel(isFavouriteMode: false, service: ContactsService(storage: PreviewStorage()))
         )
         .environmentObject(Router(isPresented: .constant(.contacts)))
     }

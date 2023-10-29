@@ -10,6 +10,7 @@ protocol ContactsInput: AnyObject {
 protocol ContactsOutput: ObservableObject {
     var contacts: [ContactCellViewModel] { get }
     var showRoute: AnyPublisher<SceneRoute, Never> { get }
+    var sceneTitle: String { get }
 }
 
 protocol ContactsViewModelType: ObservableObject {

@@ -34,11 +34,26 @@ struct ContactCellView: View {
             Text(viewModel.description)
                 .foregroundStyle(Color.black.opacity(0.5))
         }
-        .swipeActions {
-            ForEach(viewModel.swipeActions) { item in
+        .swipeActions(edge: .leading) {
+            ForEach(viewModel.swipeActions.leadingActions) { item in
+                SwipeAction(viewModel: item)
+            }
+        }
+        .swipeActions(edge: .trailing) {
+            ForEach(viewModel.swipeActions.trailingActions) { item in
                 SwipeAction(viewModel: item)
             }
         }
         .onTapGesture(perform: viewModel.onTap)
+    }
+}
+
+fileprivate extension Array where Element == SwipeActionViewModel {
+    var leadingActions: [SwipeActionViewModel] {
+        filter { $0.style == .addFavourite }
+    }
+    
+    var trailingActions: [SwipeActionViewModel] {
+        filter { $0.style == .delete }
     }
 }

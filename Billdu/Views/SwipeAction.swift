@@ -19,8 +19,8 @@ struct SwipeActionViewModel: Equatable, Hashable, Identifiable {
     }
     
     let title: String
-    let action: () -> Void
     let style: Style
+    let action: () -> Void
 }
 
 struct SwipeAction: View {
@@ -35,7 +35,7 @@ struct SwipeAction: View {
             viewModel.title,
             action: viewModel.action
         )
-        .tint(viewModel.style.tintColor)
+        .background(viewModel.style.tintColor)
     }
 }
 
@@ -51,5 +51,5 @@ fileprivate extension SwipeActionViewModel.Style {
 }
 
 #Preview {
-    SwipeAction(viewModel: SwipeActionViewModel(title: "test", action: { }, style: .addFavourite))
+    SwipeAction(viewModel: SwipeActionViewModel(title: "test", style: .addFavourite) { })
 }

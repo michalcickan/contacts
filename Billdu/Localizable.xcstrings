@@ -17,6 +17,23 @@
           }
         }
       }
+    },
+    "favourite_contacts_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourite Contacts"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obľúbené Kontakty"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

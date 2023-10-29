@@ -26,6 +26,7 @@ struct ContactsView<VM: ContactsViewModelType>: View {
             .onReceive(viewModel.output.showRoute) {
                 router.show($0, as: .sheet)
             }
+            .searchable(text: $viewModel.input.searchText)
         }
     }
 }

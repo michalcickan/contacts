@@ -29,17 +29,17 @@ struct ContactCellView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(viewModel.title)
             Text(viewModel.description)
                 .foregroundStyle(Color.black.opacity(0.5))
         }
-        .swipeActions(edge: .leading) {
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
             ForEach(viewModel.swipeActions.leadingActions) { item in
                 SwipeAction(viewModel: item)
             }
         }
-        .swipeActions(edge: .trailing) {
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             ForEach(viewModel.swipeActions.trailingActions) { item in
                 SwipeAction(viewModel: item)
             }

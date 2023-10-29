@@ -39,7 +39,7 @@ extension ContactsManager: ContactsObservable {
     }
 }
 
-private extension ContactsManager {
+extension ContactsManager {
     func notifyAboutChange() {
         guard let contacts = try? self.persistentStorage.fetch(FetchDescriptor<Contact>()) else {
             return

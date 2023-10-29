@@ -15,20 +15,24 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
     let didTapAddContact = PassthroughSubject<Void, Never>()
     
     private var cancellables: Set<AnyCancellable> = []
-    private let isFavouriteMode: Bool
     
     init(isFavouriteMode: Bool, service: ContactsServiceType, contactsObservable: ContactsObservable) {
-        self.isFavouriteMode = isFavouriteMode
         self.sceneTitle = isFavouriteMode ? "favourite_contacts_title" : "contacts_title"
-        
         
         Publishers.CombineLatest(
             $searchText
                 .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global()),
             contactsObservable.contacts
+                .map {
+                    isFavouriteMode ? $0.filter { $0.isFavourite } : $0
+                }
+                .map { contacts in
+                    contacts.sorted(by: { $0.createdAt < $1.createdAt })
+                }
+                .removeDuplicates()
         )
-        .asyncMap(searchContacts(service))
-        .map(mapContacts)
+        .asyncMap(searchContacts())
+        .map(mapContacts(isFavouriteMode: isFavouriteMode, service: service))
         .receive(on: RunLoop.main)
         .assign(to: \.contacts, on: self)
         .store(in: &cancellables)
@@ -41,36 +45,25 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
 }
 
 private extension ContactsViewModel {
-    func searchContacts(_ service: ContactsServiceType) -> (String, [Contact]) async -> [Contact] {
+    func searchContacts() -> (String, [Contact]) async -> [Contact] {
         { query, contacts in
             query.count > 2 ? contacts.searchFulltext(with: query) : contacts
         }
     }
     
-    var mapContacts: ([Contact]) -> [ContactCellViewModel] {
-        { [unowned _showRoute] contacts in
+    func mapContacts(isFavouriteMode: Bool, service: ContactsServiceType) -> ([Contact]) -> [ContactCellViewModel] {
+        { [unowned self] contacts in
             contacts.enumerated()
                 .map { offset, model in
                     ContactCellViewModel(
                         id: "\(offset)",
                         model: model,
-                        swipeActions: self.favouriteSwipeActions
+                        swipeActions: isFavouriteMode ? model.favouriteSwipeActions(service: service) : model.normalSwipeActions(service: service)
                     ) {
-                        _showRoute.send(.contactDetail(model))
+                        self._showRoute.send(.contactDetail(model))
                     }
                 }
         }
-    }
-    
-    var favouriteSwipeActions: [SwipeActionViewModel] {
-        [
-            SwipeActionViewModel(style: .addFavourite) {
-                
-            },
-            SwipeActionViewModel(style: .unfavourite) {
-                
-            }
-        ]
     }
 }
 
@@ -87,5 +80,26 @@ fileprivate extension Array where Element == Contact {
             $0.name.lowercased().lowercased().contains(normalizedQuery) ||
             $0.surname.lowercased().contains(normalizedQuery)
         }
+    }
+}
+
+fileprivate extension Contact {
+    func favouriteSwipeActions(service: ContactsServiceType) -> [SwipeActionViewModel] {
+        [
+            SwipeActionViewModel(style: .unfavourite) { [unowned self] in
+                service.unfavourite(contact: self)
+            }
+        ]
+    }
+    
+    func normalSwipeActions(service: ContactsServiceType) -> [SwipeActionViewModel] {
+        [
+            SwipeActionViewModel(style: isFavourite ? .unfavourite : .addFavourite) { [unowned self] in
+                self.isFavourite ? service.unfavourite(contact: self) : service.makeFavourite(contact: self)
+            },
+            SwipeActionViewModel(style: .delete) { [unowned self] in
+                service.removeContact(contact: self)
+            }
+        ]
     }
 }

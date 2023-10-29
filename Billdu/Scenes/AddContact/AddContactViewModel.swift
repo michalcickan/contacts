@@ -25,11 +25,12 @@ final class AddContactViewModel: AddContactInput, AddContactOutput {
         didTapConfirm
             .asyncMap { [unowned self] in
                 await service.addContact(
-                    name: self.surname,
+                    name: self.name,
                     surname: self.surname,
                     phoneNumber: self.phoneNumber
                 )
             }
+            .receive(on: RunLoop.main)
             .sink { [weak close] in
                 close?.send(())
             }

@@ -24,18 +24,16 @@ final class ContactsViewModelTests: XCTestCase {
     }
     
     func testSearchShouldGiveResultsForValidPhoneNumber() throws {
-        let expectedPhoneNumber = "0949200629"
+        let expectedContact = Contact(name: "Michal", surname: "Cickan", phoneNumber: "0949200629")
         service.contacts = [
-            Contact(name: "Michal", surname: "Cickan", phoneNumber: expectedPhoneNumber),
+            expectedContact,
             Contact(name: "Michal", surname: "Cickan2", phoneNumber: "0905252111")
         ]
         let expectation = XCTestExpectation(description: "State is set to populated")
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual([expectedPhoneNumber], value.map {
-                    $0.phoneNumber
-                })
+                XCTAssertEqual([expectedContact], value)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -44,19 +42,16 @@ final class ContactsViewModelTests: XCTestCase {
     }
     
     func testSearchShouldGiveResultsForValidName() throws {
-        let expectedName = "Peter"
+        let expectedContact = Contact(name: "Peter", surname: "Noone", phoneNumber: "0905252111")
         service.contacts = [
             Contact(name: "Michal", surname: "Cickan", phoneNumber: "0949200629"),
-            Contact(name: expectedName, surname: "Noone", phoneNumber: "0905252111")
+            expectedContact
         ]
         let expectation = XCTestExpectation(description: "State is set to populated")
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual(
-                    [expectedName],
-                    value.map { $0.name }
-                )
+                XCTAssertEqual([expectedContact], value)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -74,10 +69,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual(
-                    [expectedContact],
-                    value
-                )
+                XCTAssertEqual([expectedContact], value)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -95,10 +87,7 @@ final class ContactsViewModelTests: XCTestCase {
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual(
-                    [expectedContact],
-                    value
-                )
+                XCTAssertEqual([expectedContact], value)
                 expectation.fulfill()
             })
             .store(in: &cancellables)
@@ -107,19 +96,16 @@ final class ContactsViewModelTests: XCTestCase {
     }
     
     func testSearchShouldGiveResultsForValidSurnameCaseInsenstive() throws {
-        let expectedName = "Peter"
+        let expectedContact = Contact(name: "Peter", surname: "Noone", phoneNumber: "0905252111")
         service.contacts = [
             Contact(name: "Michal", surname: "Cickan", phoneNumber: "0949200629"),
-            Contact(name: expectedName, surname: "Noone", phoneNumber: "0905252111")
+            expectedContact
         ]
         let expectation = XCTestExpectation(description: "State is set to populated")
         self.viewModel.$contacts
             .dropFirst()
             .sink(receiveValue: { value in
-                XCTAssertEqual(
-                    [expectedName],
-                    value.map { $0.name }
-                )
+                XCTAssertEqual([expectedContact], value)
                 expectation.fulfill()
             })
             .store(in: &cancellables)

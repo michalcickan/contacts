@@ -20,7 +20,7 @@ struct ContactCellViewModel: Identifiable, Hashable {
     init(model: Contact,
          swipeActions: [SwipeActionViewModel],
          onTap: @escaping () -> Void) {
-        self.id = model.uuid.uuidString
+        self.id = model.uuid.uuidString + swipeActions.map { $0.id }.joined(separator: ", ")
         self.title = "\(model.name) \(model.surname)"
         self.description = model.phoneNumber
         self.swipeActions = swipeActions

@@ -17,6 +17,12 @@ struct SwipeActionViewModel: Equatable, Hashable, Identifiable {
     let style: Style
     let id: String
     let action: () -> Void
+    
+    init(style: SwipeActionViewModel.Style, id: String, action: @escaping () -> Void) {
+        self.style = style
+        self.id = "\(id) \(style.hashValue)"
+        self.action = action
+    }
 }
 
 struct SwipeAction: View {

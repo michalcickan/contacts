@@ -36,11 +36,16 @@ struct ContactCellView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(viewModel.title)
-            Text(viewModel.description)
-                .foregroundStyle(Color.black.opacity(0.5))
+        HStack {
+            VStack(alignment: .leading) {
+                Text(viewModel.title)
+                Text(viewModel.description)
+                    .foregroundStyle(Color.black.opacity(0.5))
+            }
+            Spacer()
         }
+        .background(.white)
+        .onTapGesture(perform: viewModel.onTap)
         .swipeActions(edge: .leading, allowsFullSwipe: false) {
             ForEach(viewModel.swipeActions.leadingActions) { item in
                 SwipeAction(viewModel: item)
@@ -51,7 +56,6 @@ struct ContactCellView: View {
                 SwipeAction(viewModel: item)
             }
         }
-        .onTapGesture(perform: viewModel.onTap)
     }
 }
 

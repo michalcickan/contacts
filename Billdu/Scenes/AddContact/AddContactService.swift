@@ -1,13 +1,11 @@
 import Foundation
 
 protocol AddContactServiceType {
-    func addContact(name: String, surname: String, phoneNumber: String) async
+    func addContact(_ contact: Contact) async
 }
 
 extension ContactsManager: AddContactServiceType {
-    func addContact(name: String, surname: String, phoneNumber: String) async {
-        insert(
-            contact: Contact(name: name, surname: surname, phoneNumber: phoneNumber)
-        )
+    func addContact(_ contact: Contact) async {
+        insert(contact: contact)
     }
 }

@@ -15,14 +15,12 @@ extension ContactsManager: ContactsServiceType {
     
     func makeFavourite(contact: Contact) {
         contact.isFavourite = true
-        notifyAboutChange()
+        saveChanges()
     }
     
     func unfavourite(contact: Contact) {
         contact.isFavourite = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.notifyAboutChange()
-        }
+        saveChanges()
     }
     
     func getAllContacts() async throws -> [Contact] {

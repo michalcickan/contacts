@@ -24,12 +24,21 @@ final class ContactsManager: ObservableObject {
 extension ContactsManager: ContactsOperations {
     func insert(contact: Contact) {
         persistentStorage.insert(contact)
-        notifyAboutChange()
+        saveChanges()
     }
     
     func delete(contact: Contact) {
         persistentStorage.delete(contact)
-        notifyAboutChange()
+        saveChanges()
+    }
+    
+    func saveChanges() {
+        do {
+            try persistentStorage.save()
+            notifyAboutChange()
+        } catch {
+            print(error)
+        }
     }
 }
 

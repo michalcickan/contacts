@@ -1,7 +1,15 @@
 import Foundation
 import SwiftUI
 
-struct ContactCellViewModel: Identifiable {
+struct ContactCellViewModel: Identifiable, Hashable {
+    static func == (lhs: ContactCellViewModel, rhs: ContactCellViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        id.hash(into: &hasher)
+    }
+    
     let id: String
     
     let title: String
@@ -9,11 +17,10 @@ struct ContactCellViewModel: Identifiable {
     let swipeActions: [SwipeActionViewModel]
     let onTap: () -> Void
     
-    init(id: String, 
-         model: Contact,
+    init(model: Contact,
          swipeActions: [SwipeActionViewModel],
          onTap: @escaping () -> Void) {
-        self.id = id
+        self.id = model.uuid.uuidString
         self.title = "\(model.name) \(model.surname)"
         self.description = model.phoneNumber
         self.swipeActions = swipeActions

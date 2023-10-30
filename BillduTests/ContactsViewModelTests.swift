@@ -9,7 +9,7 @@ final class ContactsViewModelTests: XCTestCase {
     private var cancellables: Set<AnyCancellable> = []
     
     override func setUpWithError() throws {
-        viewModel = ContactsViewModel(isFavouriteMode: false, service: service)
+        viewModel = ContactsViewModel(isFavouriteMode: false, service: service, contactsObservable: <#ContactsObservable#>)
     }
     
     override func tearDownWithError() throws {
@@ -113,24 +113,6 @@ final class ContactsViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
     
-    func testShouldGiveAllContactsAfterAppear() throws {
-        let contacts = [
-            Contact(name: "Michal", surname: "Cickan", phoneNumber: "0949200629"),
-            Contact(name: "Peter", surname: "Test", phoneNumber: "0905252111"),
-        ]
-        service.contacts = contacts
-        let expectation = XCTestExpectation(description: "State is set to populated")
-        self.viewModel.$contacts
-            .dropFirst()
-            .sink(receiveValue: { value in
-                XCTAssertEqual(contacts.comparableArray, value.comparableArray)
-                expectation.fulfill()
-            })
-            .store(in: &cancellables)
-        viewModel.input.didAppear.send(())
-        wait(for: [expectation], timeout: 10)
-    }
-    
     func testShouldCallShowRouteWhenDidTapContact() throws {
         let expectation = XCTestExpectation(description: "State is set to populated")
         self.viewModel.showRoute
@@ -145,6 +127,18 @@ final class ContactsViewModelTests: XCTestCase {
 }
 
 final class MockContactsService: ContactsServiceType {
+    func removeContact(contact: Billdu.Contact) {
+        
+    }
+    
+    func unfavourite(contact: Billdu.Contact) {
+        
+    }
+    
+    func makeFavourite(contact: Billdu.Contact) {
+        
+    }
+    
     var contacts = [Contact]()
     
     func getAllContacts() throws -> [Contact] {

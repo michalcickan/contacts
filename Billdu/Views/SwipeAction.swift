@@ -2,10 +2,6 @@ import SwiftUI
 
 
 struct SwipeActionViewModel: Equatable, Hashable, Identifiable {
-    var id: String {
-        String(describing: self)
-    }
-    
     static func == (lhs: SwipeActionViewModel, rhs: SwipeActionViewModel) -> Bool {
         lhs.id == rhs.id
     }
@@ -19,6 +15,7 @@ struct SwipeActionViewModel: Equatable, Hashable, Identifiable {
     }
     
     let style: Style
+    let id: String
     let action: () -> Void
 }
 
@@ -64,5 +61,5 @@ fileprivate extension SwipeActionViewModel.Style {
 }
 
 #Preview {
-    SwipeAction(viewModel: SwipeActionViewModel(style: .addFavourite) { })
+    SwipeAction(viewModel: SwipeActionViewModel(style: .addFavourite, id: "") { })
 }

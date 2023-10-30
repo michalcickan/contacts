@@ -38,6 +38,15 @@
         }
       }
     },
+    "Detail" : {
+
+    },
+    "Done" : {
+
+    },
+    "Edit" : {
+
+    },
     "favourite_contacts_title" : {
       "extractionState" : "stale",
       "localizations" : {

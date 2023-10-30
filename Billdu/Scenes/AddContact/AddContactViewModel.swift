@@ -15,7 +15,7 @@ final class AddContactViewModel: AddContactInput, AddContactOutput {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init(service: AddContactServiceType) {
+    init(isFavouriteMode: Bool, service: AddContactServiceType) {
         Publishers.CombineLatest3($name, $surname, $phoneNumber)
             .map {
                 $0.isEmpty || $1.isEmpty || $2.isEmpty
@@ -25,9 +25,12 @@ final class AddContactViewModel: AddContactInput, AddContactOutput {
         didTapConfirm
             .asyncMap { [unowned self] in
                 await service.addContact(
-                    name: self.name,
-                    surname: self.surname,
-                    phoneNumber: self.phoneNumber
+                    Contact(
+                        name: self.name,
+                        surname: self.surname,
+                        phoneNumber: self.phoneNumber,
+                        isFavourite: isFavouriteMode
+                    )
                 )
             }
             .receive(on: RunLoop.main)

@@ -6,7 +6,7 @@ enum SceneRoute {
     case main
     case contacts
     case favouriteContacts
-    case addContact
+    case addContact(isFavouriteMode: Bool)
     case contactDetail(_ model: Contact)
 }
 
@@ -15,16 +15,16 @@ extension SceneRoute {
     func view(_ contactsManager: ContactsManager) -> some View {
         switch self {
         case let .contactDetail(model):
-            EmptyView()
+            ContactDetailView(viewModel: ContactDetailViewModel(model: model, service: contactsManager))
         case .main:
             EmptyView()
         case .contacts:
             EmptyView()
         case .favouriteContacts:
             EmptyView()
-        case .addContact:
+        case let .addContact(isFavouriteMode):
             AddContactView(
-                viewModel: AddContactViewModel(service: contactsManager)
+                viewModel: AddContactViewModel(isFavouriteMode: isFavouriteMode, service: contactsManager)
             )
         }
     }

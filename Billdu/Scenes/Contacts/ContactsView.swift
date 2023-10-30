@@ -11,8 +11,10 @@ struct ContactsView<VM: ContactsViewModelType>: View {
     
     var body: some View {
         RoutingView(router: router) {
-            List(viewModel.output.contacts) { item in
-                ContactCellView(viewModel: item)
+            List {
+                ForEach(viewModel.output.contacts, id: \.self) { item in
+                    ContactCellView(viewModel: item)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(LocalizedStringKey(viewModel.output.sceneTitle))

@@ -29,7 +29,6 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
                 .map { contacts in
                     contacts.sorted(by: { $0.createdAt < $1.createdAt })
                 }
-                .removeDuplicates()
         )
         .asyncMap(searchContacts())
         .map(mapContacts(isFavouriteMode: isFavouriteMode, service: service))
@@ -38,7 +37,7 @@ class ContactsViewModel: ContactsOutput, ContactsInput {
         .store(in: &cancellables)
         
         didTapAddContact
-            .map { SceneRoute.addContact }
+            .map { .addContact(isFavouriteMode: isFavouriteMode) }
             .sink { [unowned _showRoute] route in _showRoute.send(route) }
             .store(in: &cancellables)
     }
@@ -53,13 +52,12 @@ private extension ContactsViewModel {
     
     func mapContacts(isFavouriteMode: Bool, service: ContactsServiceType) -> ([Contact]) -> [ContactCellViewModel] {
         { [unowned self] contacts in
-            contacts.enumerated()
+            contacts.isEmpty ? [] : contacts.enumerated()
                 .map { offset, model in
                     ContactCellViewModel(
-                        id: "\(offset)",
                         model: model,
                         swipeActions: isFavouriteMode ? model.favouriteSwipeActions(service: service) : model.normalSwipeActions(service: service)
-                    ) {
+                    ) { [unowned model] in
                         self._showRoute.send(.contactDetail(model))
                     }
                 }
@@ -86,7 +84,7 @@ fileprivate extension Array where Element == Contact {
 fileprivate extension Contact {
     func favouriteSwipeActions(service: ContactsServiceType) -> [SwipeActionViewModel] {
         [
-            SwipeActionViewModel(style: .unfavourite) { [unowned self] in
+            SwipeActionViewModel(style: .unfavourite, id: self.uuid.uuidString) { [unowned self] in
                 service.unfavourite(contact: self)
             }
         ]
@@ -94,10 +92,10 @@ fileprivate extension Contact {
     
     func normalSwipeActions(service: ContactsServiceType) -> [SwipeActionViewModel] {
         [
-            SwipeActionViewModel(style: isFavourite ? .unfavourite : .addFavourite) { [unowned self] in
+            SwipeActionViewModel(style: isFavourite ? .unfavourite : .addFavourite, id: self.uuid.uuidString) { [unowned self] in
                 self.isFavourite ? service.unfavourite(contact: self) : service.makeFavourite(contact: self)
             },
-            SwipeActionViewModel(style: .delete) { [unowned self] in
+            SwipeActionViewModel(style: .delete, id: self.uuid.uuidString) { [unowned self] in
                 service.removeContact(contact: self)
             }
         ]

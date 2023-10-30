@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 final class Contact {
+    var uuid: UUID
     var name: String
     var surname: String
     var phoneNumber: String
@@ -19,5 +20,6 @@ final class Contact {
         self.phoneNumber = phoneNumber
         self.isFavourite = isFavourite
         self.createdAt = createdAt.timeIntervalSince1970
+        self.uuid = UUID()
     }
 }

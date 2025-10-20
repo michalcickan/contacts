@@ -1,0 +1,169 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "add_contact_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Contact"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať Kontakt"
+          }
+        }
+      }
+    },
+    "Confirm" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potvrdiť"
+          }
+        }
+      }
+    },
+    "contacts_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty"
+          }
+        }
+      }
+    },
+    "Detail" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detail"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotovo"
+          }
+        }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editovať"
+          }
+        }
+      }
+    },
+    "favourite_contacts_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourite Contacts"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obľúbené Kontakty"
+          }
+        }
+      }
+    },
+    "name_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Meno"
+          }
+        }
+      }
+    },
+    "phone_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone number"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Telefónne číslo"
+          }
+        }
+      }
+    },
+    "surname_placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Surname"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Priezvisko"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
